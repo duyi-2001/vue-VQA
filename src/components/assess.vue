@@ -92,7 +92,7 @@ export default {
     uploadSuccess(response) {
       console.log(response)
       this.options.src = response
-      if(response != ''){
+      if(response !== ''){
         this.$message({
           message: '上传成功',
           type: 'success'
