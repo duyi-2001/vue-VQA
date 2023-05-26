@@ -9,7 +9,6 @@
           method="post"
           multiple
           :on-success="uploadSuccess"
-          :on-progress="uploadProgress"
       >
         <el-icon class="el-icon--upload">
           <upload-filled/>
@@ -23,9 +22,6 @@
           </div>
         </template>
       </el-upload>
-
-      <el-progress class='mx-6' v-if="uploadPercentage < 100" :percentage="uploadPercentage"></el-progress>
-
       <div class="ml-1 my-2 flex justify-center items-center">
         <vue3VideoPlay v-bind="options" poster='https://cdn.jsdelivr.net/gh/xdlumia/files/video-play/ironMan.jpg'/>
       </div>
@@ -40,6 +36,20 @@
         </el-button>
       </el-form>
     </el-card>
+<!--  显示模型验证结果-->
+  <div class="flex -mt-6" style="width: 100%; justify-content: space-around" v-show="resultShow">
+
+    <el-card class="m-6 p-12 box-card flex flex-grow">
+      <!--                <div>-->
+      <!--                    <el-image style="width: 6rem"-->
+      <!--                              src="https://yiyi-picture.oss-cn-hangzhou.aliyuncs.com/Typora/report.svg"/>-->
+      <!--                </div>-->
+      <p class="text-2xl">评估结果</p>
+      <br>
+      <p class="italic text-base font-light text-gray-500">{{ result.score }}</p>
+    </el-card>
+  </div>
+
 </template>
 
 <script>
@@ -55,7 +65,7 @@ export default {
       uploadPercentage: 0,
       button: {
         loading: false,
-        context: '验证'
+        context: '评估'
       },
       result: '',
       resultShow: false,
@@ -88,10 +98,6 @@ export default {
           type: 'success'
         })
       }
-    },
-    uploadProgress(response,event) {
-      console.log(event.percent)
-      this.uploadPercentage = Math.floor(event.percent); //这里需要从response中获得上传的进度，没搞懂啊啊啊
     },
     videoShow(row){
 
