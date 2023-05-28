@@ -13,21 +13,21 @@
         <el-table-column label="视频名">
           <template #default="scope">
             <a
-                :href="scope.row.videoUrl"
+                :href="scope.row.url"
                 target="_blank"
                 title="点击跳转到视频"
                 style="color: inherit; "
             >
-              {{ scope.row.name }}
+              {{ scope.row.vname }}
             </a>
           </template>
         </el-table-column>
 
-        <el-table-column prop="time" label="时长/s">
+        <el-table-column prop="length" label="时长/s">
         </el-table-column>
         <el-table-column prop="uploadTime" label="提交时间">
         </el-table-column>
-        <el-table-column sortable prop="quality"  label="质量分数/百分制">
+        <el-table-column sortable prop="score"  label="质量分数/百分制">
         </el-table-column>
       </el-table>
     </div>
@@ -36,33 +36,31 @@
 </template>
 
 <script>
-// import api from "@/api/index";
-import * as https from "https";
-
+import axios from "axios";
 export default {
   name: "history_record",
   data(){
     return {
       records: [
-        {
-          name: "demo",
-          time: "8.3",
-          uploadTime: "2023-05-04-05:20",
-          quality: "99",
-          videoUrl: 'https://yiyi-picture.oss-cn-hangzhou.aliyuncs.com/image/2023-05-25-17-16-30.619904500-demo.mp4'
-        },
-        {
-          name: "demo4",
-          time: "8.1",
-          uploadTime: "2023-05-04-05:20",
-          quality: "95.2",
-          videoUrl: 'https://yiyi-picture.oss-cn-hangzhou.aliyuncs.com/image/2023-05-25-17-16-30.619904500-demo.mp4'
-        }
       ]
     }
   },
   methods:{
 
+  },
+  created() {
+    axios.post('http://127.0.0.1:8080/oss/inference/getVideoHistoryList',{}).then(res=>{
+      console.log(res)
+      if(res.data.code == '200'){
+        this.records = res.data.videoHistoryList
+      }
+    }).catch(err=>{
+      console.log(err)
+      this.$message({
+        message: '获取历史记录失败',
+        type: 'error'
+      });
+    })
   }
 }
 </script>

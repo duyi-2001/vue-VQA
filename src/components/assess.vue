@@ -104,8 +104,8 @@ export default {
     },
     verificationHandle() {
 
-      axios.post('', {
-
+      axios.post('http://127.0.0.1:8080/oss/inference/inference', {
+        fileUrl: this.options.src
       }).then(res => {
         console.log(res.data)
       })
